@@ -22,7 +22,7 @@ class DBadapter {
 	}
 
 	public function insertData($query) {
-		mysql_query($query)or die("cannot insert data");
+		mysql_query($query)or die("cannot insert data ".$query);
 	}
 
 	public function getHost() {
