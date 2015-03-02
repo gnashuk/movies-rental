@@ -78,7 +78,8 @@ if(isset($_POST['confirm'])) {
 	session_start();
 	$movie = $_SESSION['movie'];
 	$dur = $_POST['duration'];
-	$today = date("Y-m-j");
+	$today = date("Y-m-d");
+	$end = date('Y-m-d', strtotime($today. ' + '.$dur.' days'));
 	$db = new DBadapter("10.254.94.2", "s172905", "s172905", "JDfGNBwt");
 	$db->connect();
 	$email = $_SESSION['email'];
@@ -88,13 +89,22 @@ if(isset($_POST['confirm'])) {
 	$id_movie = mysql_result($result1, 0, 0);
 	$id_user = mysql_result($result2, 0, 0);
 	$charge = $dur * $price;
-	$db->insertData("INSERT INTO rentals(rent_date, rent_duration, charge) VALUES('$today','$dur', '$charge')");
+	$db->insertData("INSERT INTO rentals(rent_date, rent_end_date, charge) VALUES('$today','$end', '$charge')");
 	$result3 = $db->getData("SELECT id_rental FROM rentals");
 	$row = mysql_num_rows($result3) - 1;
 	$id_rental = mysql_result($result3, $row, 0);
 	$db->insertData("INSERT INTO movies_rentals VALUES('$id_movie', '$id_rental')");
 	$db->insertData("INSERT INTO users_rentals VALUES('$id_user', '$id_rental')");
+	$message = "You have rented a movie ".$movie." for a period until ".$end.".\n".$charge."€ have been charged from your account.";
+	$message = wordwrap($message,70);
+	mail($email, "Movie rent confirmation", $message);
 	header('Location: main_page.php');
+	exit;
+}
+if(isset($_POST['operation'])) {
+	session_start();
+	$_SESSION['genre'] = $_POST['operation'];
+	header('Location: ' . $_SERVER['HTTP_REFERER']);
 	exit;
 }
 ?>

@@ -1,6 +1,5 @@
 <?php
 session_start();
-// session_start();
 
 if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	echo "<div align='right'><form class='form-inline' name='form1' method='post' action='checklogin.php'>
@@ -16,8 +15,8 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	</form>
 	Don't have account yet? <a href='register.php'>Click here to register</a></div>";
 } else {
-	echo "<div align='right'>Loged in as "
-		.$_SESSION['user']
+	echo "<div align='right'>Loged in as <a href='profile.php'>"
+		.$_SESSION['user']."</a>"
 		."<p><a href='logout.php'>log out</a></p></div>";
 }
 ?>
@@ -64,10 +63,10 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	$result2 = $db->getData("SELECT user_email, title FROM (users INNER JOIN users_rentals ON users.id_user=users_rentals.id_user) INNER JOIN (movies INNER JOIN (movies_rentals INNER JOIN rentals ON movies_rentals.id_rental=rentals.id_rental) ON movies.id_movie=movies_rentals.id_movie) ON users_rentals.id_rental=rentals.id_rental WHERE title='$movie' AND user_email='$email'");
 	echo mysql_result($result2, 0, 1);
 	if(mysql_num_rows($result2) > 0) {
-		echo "<td style='width: 400px; text-align: right; vertical-align: top;''>".mysql_result($result, 0, 8)." €/day<br><button class='btn btn-primary btn-lg' disabled='disabled'>Borrow</button></a>";
-		echo "<br>You are currently renting this movie";
+		echo "<td style='width: 400px; text-align: right; vertical-align: top;'>".mysql_result($result, 0, 8)." €/day<br><a href='confirmation.php'><button class='btn btn-primary btn-lg' disabled='disabled'>Borrow</button></a>";
+		echo "You are currently renting this movie";
 	} else {
-		echo "<td style='width: 400px; text-align: right; vertical-align: top;''>".mysql_result($result, 0, 8)." €/day<br><a href='confirmation.php'><button class='btn btn-primary btn-lg'>Borrow</button></a>";
+		echo "<td style='width: 400px; text-align: right; vertical-align: top;'>".mysql_result($result, 0, 8)." €/day<br><a href='confirmation.php'><button class='btn btn-primary btn-lg'>Borrow</button></a>";
 	}
 	if($_SESSION['alert'] == 'true') {
 		echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>Log in to proceed</div>";

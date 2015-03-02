@@ -16,31 +16,9 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
   		<button type='submit' name='Submit' class='btn btn-default'>Login</button>
 	</form>
 	Don't have account yet? <a href='register.php'>Click here to register</a></div>";
-	// "<div align='right'>
-	// <table>
-	// 	<tr>
-	// 		<td>email</td>
-	// 		<td>password</td>
-	// 		<td>&nbsp</td>
-	// 	</tr>
-	// 	<tr>
-	// 		<form name='form1' method='post' action='checklogin.php'>
-	// 		<td>
-	// 			<input name='myusername' type='email' id='myusername'>
-	// 		</td>
-	// 		<td>
-	// 			<input name='mypassword' type='password' id='mypassword'>
-	// 		</td>
-	// 		<td>
-	// 			<input type='submit' name='Submit' value='Login'>
-	// 		</td>
-	// 		</form>
-	// 	</tr>
-	// </table>
-	// </div>";
 } else {
-	echo "<div align='right'>Loged in as "
-		.$_SESSION['user']
+	echo "<div align='right'>Loged in as <a href='profile.php'>"
+		.$_SESSION['user']."</a>"
 		."<p><a href='logout.php'>log out</a></p></div>";
 }
 ?>
@@ -68,9 +46,9 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	include "DBadapter.php";
 	$db = new DBadapter("10.254.94.2", "s172905", "s172905", "JDfGNBwt");
 	$db->connect();
-	echo "<form name='form2' method='post' action='#'>Select by genre 
+	echo "<form name='form2' method='post' action='checklogin.php'>Select by genre 
 			<select name='operation' id='genre' onchange='this.form.submit()'>";
-	if(!isset($_POST['operation']) || $_POST['operation'] == 'All genres') {
+	if(!isset($_SESSION['genre']) || $_SESSION['genre'] == 'All genres') {
   		echo "<option value='All genres' selected>All genres</option>";
   		$result = $db->getData("SELECT * FROM genres");
   		$rows_num=mysql_num_rows($result);
@@ -82,7 +60,7 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	
 		$result = $db->getData("SELECT title, cover FROM movies");
 	} else {
-		$sent_val = $_POST['operation'];
+		$sent_val = $_SESSION['genre'];
 		$result = $db->getData("SELECT * FROM genres");
   		$rows_num=mysql_num_rows($result);
   		for($i = 0; $i < $rows_num; $i++) {
@@ -104,6 +82,57 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 ?>
 					</ol>
 				</td>
+				<td>
+					<h3>The most reviewed movies</h3>
+					<ol>
+<?php
+	$result = $db->getData("SELECT title FROM movies");
+	$mov_num = mysql_num_rows($result);
+	$arr = array();
+	for($i = 0; $i < $mov_num; $i++) {
+		$mov = mysql_result($result, $i, 0);
+		$result1 = $db->getData("SELECT COUNT(*) FROM movies INNER JOIN reviews ON movies.id_movie=reviews.id_movie WHERE title='$mov'");
+		$arr[$mov] = mysql_result($result1, 0, 0);
+	}
+	arsort($arr);
+	if($mov_num < 5) {
+		for($i = 0; $i < $mov_num; $i++) {
+			echo "<li><a href='movie_page.php?data=".key($arr)."'>".key($arr)."</a></li>";
+			next($arr);
+		}
+	} else {
+		for($i = 0; $i < 5; $i++) {
+			echo "<li><a href='movie_page.php?data=".key($arr)."'>".key($arr)."</a></li>";
+			next($arr);
+		}
+	}
+?>
+				</ol>
+				<h3>The most borrowed movies</h3>
+				<ol>
+<?php
+	$result = $db->getData("SELECT title FROM movies");
+	$mov_num = mysql_num_rows($result);
+	$arr = array();
+	for($i = 0; $i < $mov_num; $i++) {
+		$mov = mysql_result($result, $i, 0);
+		$result1 = $db->getData("SELECT COUNT(*) FROM movies INNER JOIN movies_rentals ON movies.id_movie=movies_rentals.id_movie WHERE title='$mov'");
+		$arr[$mov] = mysql_result($result1, 0, 0);
+	}
+	arsort($arr);
+	if($mov_num < 5) {
+		for($i = 0; $i < $mov_num; $i++) {
+			echo "<li><a href='movie_page.php?data=".key($arr)."'>".key($arr)."</a></li>";
+			next($arr);
+		}
+	} else {
+		for($i = 0; $i < 5; $i++) {
+			echo "<li><a href='movie_page.php?data=".key($arr)."'>".key($arr)."</a></li>";
+			next($arr);
+		}
+	}
+?>
+				</ol>
 			</tr>
 		</table>
 	</body>
