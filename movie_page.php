@@ -38,6 +38,7 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
   		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  		<link rel="shortcut icon" href="favicon.ico">
   		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
 		<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
@@ -116,10 +117,6 @@ if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
 	}
 	echo "</td>";
 ?>
-								<!-- Modal -->
-
-
-
 			</tr>
 		</table>
 <?php
