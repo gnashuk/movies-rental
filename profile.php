@@ -42,7 +42,7 @@
           <td><a href='movie_page.php?data=".$title."'>".$title."</a></td>
           <td>".$rent_date."</td>
           <td>".$end_date."</td>
-          <td><a href='stream.php?data=".$title."'>watch now</a></td>
+          <td><a href='player.php?data=".$title."'>watch now</a></td>
         </tr>";
         $count++;
       }

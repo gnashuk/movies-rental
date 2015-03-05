@@ -49,6 +49,7 @@ if(isset($_POST['register'])) {
 	$db->insertData("INSERT INTO users(user_email, user_password, user_name, user_surname) VALUES('$email', '$password1', '$name', '$surname')");
 	$_SESSION['log'] = 'in';
 	$_SESSION['user'] = $name." ".$surname;
+	$_SESSION['email'] = $email;
 	header('Location: main_page.php');
 	exit;
 }
@@ -93,7 +94,6 @@ if(isset($_POST['operation'])) {
 if(isset($_POST['review'])) {
 	session_start();
 	$name = $_SESSION['movie'];
-	include "DBadapter.php";
 	$db = new DBadapter("10.254.94.2", "s172905", "s172905", "JDfGNBwt");
 	$db->connect();
 	$result = $db->getData("SELECT id_movie FROM movies WHERE title='$name'");

@@ -2,22 +2,52 @@
 session_start();
 
 if( !isset($_SESSION['log']) || ($_SESSION['log'] != 'in') ) {
-	echo "<div align='right'><form class='form-inline' name='form1' method='post' action='checklogin.php'>
+
+	echo "<nav class='navbar navbar-default'>
+	<div class='container-fluid' >
+        
+		<div align='right' style='padding: 10px;'>
+		<div class='navbar-header'>
+          <a class='navbar-brand' href='main_page.php'>Main page</a>
+        </div>
+			<form class='form-inline' name='form1' method='post' action='checklogin.php'>
   			<div class='form-group'>
-    		<label for='myusername'>Email</label>
-    		<input type='email' class='form-control' name='myusername' id='myusername' placeholder='example@mail.com' size='15'>
- 		</div>
-		<div class='form-group'>
-		    <label for='mypassword'>Password</label>
-  			<input type='password' class='form-control' name='mypassword' id='mypassword' size=10>
+    			<label for='myusername'>Email</label>
+    			<input type='email' class='form-control' name='myusername' id='myusername' placeholder='example@mail.com' size='15'>
+ 			</div>
+			<div class='form-group'>
+		    	<label for='mypassword'>Password</label>
+  				<input type='password' class='form-control' name='mypassword' id='mypassword' size=10>
+			</div>
+  			<button type='submit' name='Submit' class='btn btn-default'>Login</button>
+			</form>
+			Don't have account yet? <a href='register.php'>Click here to register</a>
 		</div>
-  		<button type='submit' name='Submit' class='btn btn-default'>Login</button>
-	</form>
-	Don't have account yet? <a href='register.php'>Click here to register</a></div>";
+	</div>
+	</nav>";
 } else {
-	echo "<div align='right'>Loged in as <a href='profile.php'>"
-		.$_SESSION['user']."</a>"
-		."<p><a href='logout.php'>log out</a></p></div>";
+	echo "<nav class='navbar navbar-default'>
+	<div class='container-fluid'>
+		<div class='navbar-header'>
+          <a class='navbar-brand' href='main_page.php'>Main page</a>
+        </div>
+        <div>
+        <ul class='nav navbar-nav navbar-right'>
+    		<li class='dropdown'>
+      			<button class='btn btn-default btn-lg dropdown-toggle' type='button' id='dropdownMenuDivider' data-toggle='dropdown' aria-expanded='true'>".
+      		  	$_SESSION['user'].
+        		"<span class='caret'></span>
+      			</button>
+      			<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenuDivider'>
+        			<li role='presentation'><a role='menuitem' tabindex='-1' href='profile.php'>Profile</a></li>
+        			<li role='presentation' class='divider'></li>
+        			<li role='presentation'><a role='menuitem' tabindex='-1' href='logout.php'>Log out</a></li>
+      			</ul>
+      		</li>
+      	</ul>
+    	</div>
+	</div>
+	</nav>";
 }
 ?>
 <html>
